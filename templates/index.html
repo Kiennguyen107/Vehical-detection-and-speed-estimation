@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Vi Phạm Giao Thông</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:        #f0f4f8;
+            --surface:   #ffffff;
+            --surface2:  #f8fafc;
+            --border:    #e2e8f0;
+            --blue:      #3b82f6;
+            --blue-soft: #eff6ff;
+            --red:       #ef4444;
+            --red-soft:  #fef2f2;
+            --green:     #22c55e;
+            --green-soft:#f0fdf4;
+            --amber:     #f59e0b;
+            --amber-soft:#fffbeb;
+            --text:      #1e293b;
+            --sub:       #64748b;
+            --muted:     #94a3b8;
+            --mono:      'JetBrains Mono', monospace;
+            --sans:      'Nunito', sans-serif;
+            --radius:    14px;
+            --shadow:    0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 10px 40px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 0 var(--border);
+        }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: var(--blue);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .logo-icon svg { color: white; }
+        .logo-text { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: -0.3px; }
+        .logo-text span { color: var(--blue); }
+        .header-right { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); font-weight: 600; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* ── MAIN ── */
+        main { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+
+        /* ── HERO ── */
+        .hero { text-align: center; margin-bottom: 36px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--blue-soft); color: var(--blue);
+            font-size: 12px; font-weight: 700;
+            padding: 5px 14px; border-radius: 100px; margin-bottom: 16px;
+        }
+        h1 { font-size: clamp(28px, 5vw, 40px); font-weight: 800; color: var(--text); letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 10px; }
+        h1 span { color: var(--blue); }
+        .hero-sub { font-size: 15px; color: var(--sub); font-weight: 500; max-width: 440px; margin: 0 auto; line-height: 1.6; }
+
+        /* ── SEARCH CARD ── */
+        .search-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 28px 32px;
+            box-shadow: var(--shadow); margin-bottom: 36px;
+        }
+        .search-card label { display: block; font-size: 13px; font-weight: 700; color: var(--sub); margin-bottom: 10px; }
+        .search-row { display: flex; gap: 10px; }
+        .plate-input {
+            flex: 1; background: var(--surface2); border: 1.5px solid var(--border);
+            border-radius: 10px; color: var(--text); font-family: var(--mono);
+            font-size: 17px; font-weight: 500; letter-spacing: 3px;
+            padding: 13px 20px; outline: none; text-transform: uppercase;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .plate-input::placeholder { color: var(--muted); letter-spacing: 1px; font-size: 14px; font-weight: 400; }
+        .plate-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.12); background: var(--surface); }
+        .search-btn {
+            background: var(--blue); color: white; border: none; border-radius: 10px;
+            padding: 13px 28px; font-family: var(--sans); font-size: 15px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 8px;
+            transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+            white-space: nowrap; box-shadow: 0 2px 8px rgba(59,130,246,0.3);
+        }
+        .search-btn:hover { background: #2563eb; box-shadow: 0 4px 16px rgba(59,130,246,0.4); }
+        .search-btn:active { transform: scale(0.97); }
+        .error-msg {
+            margin-top: 10px; padding: 10px 14px;
+            background: var(--red-soft); border: 1px solid #fecaca;
+            border-radius: 8px; color: var(--red); font-size: 13px; font-weight: 600;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* ── RESULTS BAR ── */
+        .results-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .results-bar h2 { font-size: 16px; font-weight: 700; color: var(--text); }
+        .results-bar h2 span { color: var(--sub); font-weight: 500; }
+        .count-badge { background: var(--blue-soft); color: var(--blue); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 100px; }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); overflow: hidden;
+            display: grid; grid-template-columns: 260px 1fr;
+            box-shadow: var(--shadow); margin-bottom: 14px;
+            transition: box-shadow 0.2s, transform 0.2s;
+            animation: slideUp 0.35s ease both;
+        }
+        .card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        .card:nth-child(1) { animation-delay: 0.04s; }
+        .card:nth-child(2) { animation-delay: 0.08s; }
+        .card:nth-child(3) { animation-delay: 0.12s; }
+        .card:nth-child(4) { animation-delay: 0.16s; }
+        .card:nth-child(5) { animation-delay: 0.20s; }
+
+        /* ── IMAGE ── */
+        .card-img { position: relative; background: #e8edf2; overflow: hidden; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+        .card:hover .card-img img { transform: scale(1.03); }
+        .card-img-placeholder {
+            width: 100%; height: 100%; min-height: 190px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 8px; color: var(--muted);
+        }
+        .card-img-placeholder span { font-size: 12px; font-weight: 600; }
+
+        /* ── CARD BODY ── */
+        .card-body { padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; }
+        .card-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; gap: 12px; }
+        .plate-tag {
+            font-family: var(--mono); font-size: 18px; font-weight: 500;
+            color: var(--text); background: var(--surface2);
+            border: 1.5px solid var(--border); border-radius: 8px;
+            padding: 6px 14px; letter-spacing: 2px;
+        }
+        .status-pill { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 100px; white-space: nowrap; }
+        .pill-red   { background: var(--red-soft);   color: var(--red);   }
+        .pill-amber { background: var(--amber-soft);  color: var(--amber); }
+        .pill-green { background: var(--green-soft);  color: var(--green); }
+
+        /* ── FIELDS ── */
+        .fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
+        .field-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .field-value { font-size: 15px; font-weight: 700; color: var(--text); }
+        .field-value.speed { font-family: var(--mono); font-size: 22px; color: var(--red); }
+        .field-value.speed small { font-size: 12px; color: var(--muted); font-weight: 500; margin-left: 2px; }
+
+        /* ── CARD FOOTER ── */
+        .card-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--border); }
+        .datetime { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--sub); }
+        .dist-tag { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px; }
+        .dist-yes { background: var(--red-soft);  color: var(--red);   }
+        .dist-no  { background: var(--green-soft); color: var(--green); }
+
+        /* ── DISTANCE TABLE ── */
+        .dist-table-wrap {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); overflow: hidden;
+            box-shadow: var(--shadow); margin-bottom: 14px;
+        }
+        .dist-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .dist-table thead tr { background: #f8fafc; border-bottom: 2px solid var(--border); }
+        .dist-table th { padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+        .dist-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); font-weight: 500; }
+        .dist-table tbody tr:last-child td { border-bottom: none; }
+        .dist-table tbody tr:hover { background: var(--surface2); }
+        .id-tag { background: var(--blue-soft); color: var(--blue); font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 6px; }
+        .dist-val { font-family: var(--mono); font-weight: 600; }
+        .dist-val.danger { color: var(--red); }
+        .speed-tag { background: var(--amber-soft); color: var(--amber); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 6px; font-family: var(--mono); }
+
+        /* ── EMPTY ── */
+        .empty-state { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 72px 24px; text-align: center; box-shadow: var(--shadow); }
+        .empty-icon { width: 64px; height: 64px; background: var(--surface2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: var(--muted); }
+        .empty-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+        .empty-sub { font-size: 14px; color: var(--sub); font-weight: 500; }
+
+        /* ── IDLE ── */
+        .idle-state { text-align: center; padding: 48px 24px; }
+        .idle-text { font-size: 14px; color: var(--muted); font-weight: 500; margin-bottom: 14px; }
+        .idle-chips { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .idle-chip {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 100px;
+            padding: 6px 16px; font-size: 13px; font-weight: 600; color: var(--sub);
+            font-family: var(--mono); cursor: pointer; transition: all 0.15s;
+        }
+        .idle-chip:hover { background: var(--blue-soft); border-color: #bfdbfe; color: var(--blue); }
+
+        /* ── FOOTER ── */
+        footer { border-top: 1px solid var(--border); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; background: var(--surface); }
+        footer span { font-size: 12px; color: var(--muted); font-weight: 600; }
+
+        @media (max-width: 640px) {
+            header { padding: 0 16px; }
+            main   { padding: 28px 16px 60px; }
+            .card  { grid-template-columns: 1fr; }
+            .card-img { min-height: 200px; }
+            .fields { grid-template-columns: repeat(2, 1fr); }
+            .search-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-icon">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4l3 3"/>
+            </svg>
+        </div>
+        <span class="logo-text">Tra Cứu <span>Vi Phạm</span></span>
+    </div>
+    <div class="header-right">
+        <div class="dot"></div>
+        Hệ thống hoạt động
+    </div>
+</header>
+
+<main>
+    <div class="hero">
+        <div class="hero-badge">
+            🚦 Hệ thống camera thông minh
+        </div>
+        <h1>Tra cứu <span>biển số xe</span><br>vi phạm giao thông</h1>
+        <p class="hero-sub">Nhập biển số xe để xem lịch sử vi phạm tốc độ và khoảng cách được ghi nhận tự động.</p>
+    </div>
+
+    <div class="search-card">
+        <label for="plate-input">🔍 Biển số xe</label>
+        <form method="POST" action="/">
+            <div class="search-row">
+                <input
+                    id="plate-input"
+                    class="plate-input"
+                    type="text"
+                    name="plate"
+                    placeholder="VD: 51F-123.45"
+                    value="{{ plate }}"
+                    autocomplete="off"
+                    autofocus
+                >
+                <button class="search-btn" type="submit">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Tìm kiếm
+                </button>
+            </div>
+            {% if error %}
+            <div class="error-msg">
+                ⚠ {{ error }}
+            </div>
+            {% endif %}
+        </form>
+    </div>
+
+    {% if plate %}
+
+        {# ── VI PHẠM TỐC ĐỘ ── #}
+        {% if results %}
+        <div class="results-bar">
+            <h2>Vi phạm tốc độ cho <span>"{{ plate }}"</span></h2>
+            <span class="count-badge">{{ results|length }} bản ghi</span>
+        </div>
+
+        {% for r in results %}
+        {% set time, date, speed, lane, plate_num, color, status, frame_path, dist_vio, over_by = r %}
+        <div class="card">
+            <div class="card-img">
+                {% if frame_path %}
+                <img
+                    src="/image?path={{ frame_path }}"
+                    alt="Xe vi phạm"
+                    onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg width=\'32\' height=\'32\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\' viewBox=\'0 0 24 24\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg><span>Không có ảnh</span></div>'"
+                >
+                {% else %}
+                <div class="card-img-placeholder">
+                    <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <path d="m21 15-5-5L5 21"/>
+                    </svg>
+                    <span>Không có ảnh</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="card-body">
+                <div>
+                    <div class="card-head">
+                        <span class="plate-tag">{{ plate_num if plate_num and plate_num != 'Detecting...' else '—' }}</span>
+                        <span class="status-pill
+                            {% if status == 'TOO_FAST' %}pill-red
+                            {% elif status == 'TOO_SLOW' %}pill-amber
+                            {% else %}pill-green{% endif %}">
+                            {% if status == 'TOO_FAST' %} Vượt tốc độ
+                            {% elif status == 'TOO_SLOW' %} Chạy quá chậm
+                            {% else %}{{ status }}{% endif %}
+                        </span>
+                    </div>
+
+                    <div class="fields">
+                        <div>
+                            <div class="field-label">Tốc độ</div>
+                            <div class="field-value speed">{{ speed }}<small>km/h</small></div>
+                        </div>
+                        <div>
+                            <div class="field-label">Vượt quá</div>
+                            <div class="field-value over">{{ over_by }}<small>km/h</small></div>
+                        </div>
+                        <div>
+                            <div class="field-label">Làn đường</div>
+                            <div class="field-value">{{ lane or '—' }}</div>
+                        </div>
+                        <div>
+                            <div class="field-label">Màu xe</div>
+                            <div class="field-value">{{ color if color and color not in ['Detecting...', 'N/A'] else '—' }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-foot">
+                    <div class="datetime">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                        </svg>
+                        {{ date }} &nbsp;·&nbsp; {{ time }}
+                    </div>
+                    <span class="dist-tag {% if dist_vio %}dist-yes{% else %}dist-no{% endif %}">
+                        {% if dist_vio %}⚠ Vi phạm khoảng cách{% else %}✓ Khoảng cách OK{% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {# ── VI PHẠM KHOẢNG CÁCH — độc lập với results ── #}
+        {% if dist_results %}
+        <div class="results-bar" style="margin-top: 32px;">
+            <h2>Vi phạm khoảng cách cho <span>"{{ plate }}"</span></h2>
+            <span class="count-badge">{{ dist_results|length }} bản ghi</span>
+        </div>
+
+        <div class="dist-table-wrap">
+            <table class="dist-table">
+                <thead>
+                    <tr>
+                        <th>Thời gian</th>
+                        <th>Ngày</th>
+                        <th>Khoảng cách (m)</th>
+                        <th>Ngưỡng an toàn (m)</th>
+                        <th>Tốc độ (km/h)</th>
+                        <th>Làn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in dist_results %}
+                        {% set time, date, distance, safe_dist, speed, lane, plate_num = r %}
+                        <tr>
+                            <td>{{ time }}</td>
+                            <td>{{ date }}</td>
+                            <td class="dist-val danger">{{ distance }}</td>
+                            <td class="dist-val">{{ safe_dist }}</td>
+                            <td><span class="speed-tag">{{ speed }} km/h</span></td>
+                            <td>{{ lane }}</td>
+                            <td><span class="plate-tag" style="font-size:13px;">{{ plate_num or '—' }}</span></td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {# ── KHÔNG CÓ KẾT QUẢ NÀO ── #}
+        {% if not results and not dist_results %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+            </div>
+            <div class="empty-title">Không tìm thấy kết quả</div>
+            <div class="empty-sub">Không có bản ghi vi phạm nào cho biển số "<strong>{{ plate }}</strong>"</div>
+        </div>
+        {% endif %}
+
+    {% else %}
+    <div class="idle-state">
+        <p class="idle-text">Hoặc thử tìm kiếm nhanh</p>
+        <div class="idle-chips">
+            <span class="idle-chip" onclick="document.querySelector('.plate-input').value=this.innerText">51F-123.45</span>
+            <span class="idle-chip" onclick="document.querySelector('.plate-input').value=this.innerText">29A-999.99</span>
+            <span class="idle-chip" onclick="document.querySelector('.plate-input').value=this.innerText">43C-456.78</span>
+        </div>
+    </div>
+    {% endif %}
+</main>
+
+</body>
+</html>
