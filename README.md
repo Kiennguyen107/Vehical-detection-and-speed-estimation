@@ -56,8 +56,8 @@ Load video
 
 | Thành phần | Công nghệ |
 |---|---|
-| Object Detection & Tracking | YOLOv8 + BotSORT |
-| Lane Detection | YOLOv8 Segmentation + DBSCAN |
+| Object Detection & Tracking | YOLOv12 + BotSORT |
+| Lane Detection | YOLOv12 Segmentation + DBSCAN |
 | OCR biển số | PaddleOCR |
 | Nhận dạng màu | KMeans (scikit-learn) |
 | Giao diện | PyQt6 + Matplotlib |
